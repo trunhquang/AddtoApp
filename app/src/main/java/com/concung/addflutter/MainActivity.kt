@@ -3,6 +3,7 @@ package com.concung.addflutter
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import io.flutter.FlutterInjector
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
@@ -19,10 +20,20 @@ class MainActivity : AppCompatActivity() {
         // Instantiate a FlutterEngine.
         flutterEngine = FlutterEngine(this)
 
+
+        // Configure an initial route.
+        flutterEngine?.getNavigationChannel()?.setInitialRoute("your/route/here");
+
         // Start executing Dart code to pre-warm the FlutterEngine.
         flutterEngine?.dartExecutor?.executeDartEntrypoint(
             DartExecutor.DartEntrypoint.createDefault()
         )
+
+        val flutterLoader = FlutterInjector.instance().flutterLoader()
+
+//        flutterEngine?.dartExecutor?.executeDartEntrypoint(
+//            DartExecutor.DartEntrypoint(flutterLoader.findAppBundlePath(), "adasd")
+//        )
 
         // Cache the FlutterEngine to be used by FlutterActivity.
         FlutterEngineCache
@@ -31,12 +42,6 @@ class MainActivity : AppCompatActivity() {
 
 
         findViewById<Button>(R.id.button).setOnClickListener {
-//            startActivity(
-//                FlutterActivity
-//                    .withNewEngine()
-////                    .initialRoute("/")
-//                    .build(this)
-//            )
             startActivity(
                 FlutterActivity
                     .withCachedEngine("my_engine_id")
